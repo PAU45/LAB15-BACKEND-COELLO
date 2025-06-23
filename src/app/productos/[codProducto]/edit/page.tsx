@@ -34,7 +34,7 @@ export default function EditarProducto() {
     fetchProducto(); // Carga los datos del producto al montar el componente
   }, [codProducto]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const res = await fetch(`http://localhost:3001/api/productos/${codProducto}`, {
