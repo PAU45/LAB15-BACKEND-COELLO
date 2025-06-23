@@ -2,20 +2,37 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { createProducto } from "@//lib/api"; // Assuming this path is correct for your project structure
 
 export default function CrearProducto() {
   const router = useRouter();
   const [form, setForm] = useState({ nomPro: "", precioProducto: "", stockProducto: "" });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await createProducto({
-      ...form,
-      precioProducto: parseFloat(form.precioProducto),
-      stockProducto: parseInt(form.stockProducto),
-    });
-    router.push('/productos');
+    try {
+      const res = await fetch("http://localhost:3001/api/productos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...form,
+          precioProducto: parseFloat(form.precioProducto),
+          stockProducto: parseInt(form.stockProducto),
+        }),
+      });
+
+      if (res.ok) {
+        alert("Producto creado correctamente");
+        router.push("/productos"); // Redirige a la lista de productos
+      } else {
+        const data = await res.json();
+        alert("Error al crear producto: " + (data.message || "Error desconocido"));
+      }
+    } catch (error) {
+      console.error("Error al crear producto:", error);
+      alert("No se pudo crear el producto. Intenta nuevamente.");
+    }
   };
 
   return (
@@ -41,8 +58,8 @@ export default function CrearProducto() {
         value={form.stockProducto}
         onChange={(e) => setForm({ ...form, stockProducto: e.target.value })}
       />
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-        Crear
+      <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">
+        Crear Producto
       </button>
     </form>
   );

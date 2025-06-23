@@ -1,11 +1,19 @@
 "use client";
+const columnas = 5; // Número de columnas en el encabezado
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
+interface Producto {
+  codProducto: string;
+  nomPro: string;
+  precioProducto: number;
+  stockProducto: number;
+}
+
 export default function ProductosPage() {
-  const [productos, setProductos] = useState([]);
-  const [error, setError] = useState(null); // Estado para manejar errores
+  const [productos, setProductos] = useState<Producto[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const fetchProductos = async () => {
@@ -14,7 +22,7 @@ export default function ProductosPage() {
       if (!res.ok) {
         throw new Error("Error al obtener productos");
       }
-      const data = await res.json();
+      const data: Producto[] = await res.json();
       setProductos(data);
     } catch (error) {
       console.error("Error al obtener productos:", error);
@@ -22,7 +30,7 @@ export default function ProductosPage() {
     }
   };
 
-  const eliminarProducto = async (codProducto) => {
+  const eliminarProducto = async (codProducto: string) => {
     const confirmar = confirm("¿Estás seguro de eliminar este producto?");
     if (!confirmar) return;
 
@@ -99,12 +107,12 @@ export default function ProductosPage() {
             </tr>
           ))}
           {productos.length === 0 && (
-            <tr>
-              <td colSpan="5" className="p-4 text-center">
-                No hay productos disponibles.
-              </td>
-            </tr>
-          )}
+                <tr>
+                    <td colSpan={columnas} className="p-4 text-center">
+                    No hay productos disponibles.
+                    </td>
+                </tr>
+                )}
         </tbody>
       </table>
     </div>
