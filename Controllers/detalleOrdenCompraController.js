@@ -1,9 +1,9 @@
-const Producto = require('../models/producto');
+const DetalleOrdenCompra = require('../models/detalleOrdenCompra');
 
 exports.getAll = async (req, res) => {
   try {
-    const productos = await Producto.findAll();
-    res.json(productos);
+    const detalles = await DetalleOrdenCompra.findAll();
+    res.json(detalles);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -11,9 +11,12 @@ exports.getAll = async (req, res) => {
 
 exports.getOne = async (req, res) => {
   try {
-    const producto = await Producto.findByPk(req.params.codProducto);
-    if (!producto) return res.status(404).json({ message: 'No encontrado' });
-    res.json(producto);
+    const { NroOrdenC, CodMedicamento } = req.params;
+    const detalle = await DetalleOrdenCompra.findOne({
+      where: { NroOrdenC, CodMedicamento }
+    });
+    if (!detalle) return res.status(404).json({ message: 'No encontrado' });
+    res.json(detalle);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -21,7 +24,7 @@ exports.getOne = async (req, res) => {
 
 exports.create = async (req, res) => {
   try {
-    const nuevo = await Producto.create(req.body);
+    const nuevo = await DetalleOrdenCompra.create(req.body);
     res.status(201).json(nuevo);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -30,10 +33,10 @@ exports.create = async (req, res) => {
 
 exports.update = async (req, res) => {
   try {
-    const actualizado = await Producto.update(req.body, {
-      where: { codProducto: req.params.codProducto }
+    const { NroOrdenC, CodMedicamento } = req.params;
+    const actualizado = await DetalleOrdenCompra.update(req.body, {
+      where: { NroOrdenC, CodMedicamento }
     });
-
     if (actualizado[0] === 0) return res.status(404).json({ message: 'No encontrado' });
     res.json({ message: 'Actualizado correctamente' });
   } catch (err) {
@@ -43,10 +46,10 @@ exports.update = async (req, res) => {
 
 exports.remove = async (req, res) => {
   try {
-    const eliminado = await Producto.destroy({
-      where: { codProducto: req.params.codProducto }
+    const { NroOrdenC, CodMedicamento } = req.params;
+    const eliminado = await DetalleOrdenCompra.destroy({
+      where: { NroOrdenC, CodMedicamento }
     });
-
     if (!eliminado) return res.status(404).json({ message: 'No encontrado' });
     res.sendStatus(204);
   } catch (err) {
