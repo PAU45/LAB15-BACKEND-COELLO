@@ -35,19 +35,19 @@ const Medicamento = sequelize.define('Medicamento', {
     type: DataTypes.DECIMAL(10,2),
     allowNull: false
   },
-  CodTipoMed: { // Clave foránea real
+  CodTipoMed: { 
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
-      model: 'TipoMedic', // nombre del modelo (tabla)
+      model: 'TipoMedic', 
       key: 'CodTipoMed'
     }
   },
-  CodEspec: { // Clave foránea real
+  CodEspec: { 
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
-      model: 'Especialidad', // nombre del modelo (tabla)
+      model: 'Especialidad', 
       key: 'CodEspec'
     }
   },

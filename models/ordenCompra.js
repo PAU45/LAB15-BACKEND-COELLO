@@ -13,7 +13,7 @@ const OrdenCompra = sequelize.define('OrdenCompra', {
   CodLab: {
     type: DataTypes.INTEGER,
     references: {
-      model: 'Laboratorio', // nombre del modelo (tabla)
+      model: 'Laboratorio', 
       key: 'CodLab'
     }
   },

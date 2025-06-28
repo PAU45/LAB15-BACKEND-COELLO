@@ -6,7 +6,7 @@ const DetalleOrdenVta = sequelize.define('DetalleOrdenVta', {
     type: DataTypes.INTEGER,
     primaryKey: true,
     references: {
-      model: 'OrdenVenta', // nombre del modelo (tabla)
+      model: 'OrdenVenta',
       key: 'NroOrdenVta'
     }
   },
@@ -14,7 +14,7 @@ const DetalleOrdenVta = sequelize.define('DetalleOrdenVta', {
     type: DataTypes.INTEGER,
     primaryKey: true,
     references: {
-      model: 'Medicamento', // nombre del modelo (tabla)
+      model: 'Medicamento',
       key: 'CodMedicamento'
     }
   },

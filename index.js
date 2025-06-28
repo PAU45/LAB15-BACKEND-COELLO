@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const medicamentoRoutes = require('./routes/MedicamentoRoutes');
@@ -10,7 +11,7 @@ const ordenVentaRoutes = require('./routes/ordenVentaRoutes');
 const detalleOrdenVtaRoutes = require('./routes/detalleOrdenVtaRoutes');
 const sequelize = require('./db');
 
-// Carga de modelos y asociaciones
+
 const Medicamento = require('./models/Medicamento');
 const TipoMedic = require('./models/tipoMedic');
 const Especialidad = require('./models/especialidad');
@@ -20,7 +21,7 @@ const DetalleOrdenCompra = require('./models/detalleOrdenCompra');
 const OrdenVenta = require('./models/ordenVenta');
 const DetalleOrdenVta = require('./models/detalleOrdenVta');
 
-// Asociaciones (foreign keys)
+
 Medicamento.belongsTo(TipoMedic, { foreignKey: 'CodTipoMed' });
 Medicamento.belongsTo(Especialidad, { foreignKey: 'CodEspec' });
 
@@ -46,11 +47,12 @@ app.use('/api/detalle-orden-compra', detalleOrdenCompraRoutes);
 app.use('/api/orden-venta', ordenVentaRoutes);
 app.use('/api/detalle-orden-vta', detalleOrdenVtaRoutes);
 
-sequelize.sync({ force: false}) // Cambiar a true para reiniciar la base de datos
+sequelize.sync({ force: false}) 
   .then(() => {
     console.log('Base de datos sincronizada');
-    app.listen(3001, () => {
-      console.log('Backend corriendo en http://localhost:3001');
+    const PORT = process.env.PORT || 3001;
+    app.listen(PORT, () => {
+      console.log(`Backend corriendo en http://localhost:${PORT}`);
     });
   })
   .catch(err => {
